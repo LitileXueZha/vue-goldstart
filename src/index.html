@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="node_modules/@highlightjs/cdn-assets/styles/github-dark.min.css">
+    <link rel="stylesheet" href="index.css">
+    <script src="node_modules/vue/dist/vue.global.js"></script>
+    <script src="node_modules/@highlightjs/cdn-assets/highlight.js"></script>
+    <script src="node_modules/@highlightjs/vue-plugin/dist/highlightjs-vue.min.js"></script>
+</head>
+<body>
+    <div class="bg-success">
+        <div class="container header">
+            <div class="brand bg-warning"></div>
+            <a class="text-light" href="https://getbootstrap.com/docs/5.2/getting-started/introduction/" target="_blank">Bootstrap</a>
+            <a class="text-light" href="https://vuejs.org/guide/introduction.html" target="_blank">Vue.js</a>
+        </div>
+    </div>
+    <div class="container">
+        <h2>基础</h2>
+        <div id="app">{{ message }}</div>
+        <div id="v01">
+            <button class="btn btn-info" @click="count++">click: {{ count }}</button>
+            <highlightjs language="xml" :code="html" />
+        </div>
+        <div class="alert alert-info">模板语法 <code>.Vue</code> 单文件通常在工程化项目中使用</div>
+        <h2>"Mustache" 语法和简单的指令</h2>
+        <p><code>{{ }}</code> 花括号中的变量名将被替换，可使用一些简单的 js 语法</p>
+        <div id="v02">
+            <span>count: <label class="label">{{ count }}</label></span>
+            <span>count++: <label class="label">{{ count + 1 }}</label></span>
+            <span>count?: <label class="label">{{ count ? true : false }}</label></span>
+            <span>count to binary: <label class="label">{{ count.toString(2) }}</label></span>
+            <div :id="`list-${count}`">div#list-{count}</div>
+            <br>
+            <p>
+                Mustache 内也可以调用组件上的方法和一些内置对象，比如 <code>Date</code> 和 <code>Math</code>。
+                Mustache 语法中内置的全局对象是有限的，参考
+                <a href="https://github.com/vuejs/core/blob/main/packages/shared/src/globalsWhitelist.ts#L3" target="_blank" rel="noopener noreferrer">
+                    restricted list of globals
+                </a>，这意味着此 window 非彼 window，浏览器 window 对象上定义的全局变量在 Mustache 中
+                无法访问。如需要可通过 <code>app.config.globalProperties</code> 来绑定。
+            </p>
+            <span>Date: <label class="label">{{ new Date() }}</label></span>
+            <span>根号二 √2: <label class="label">{{ Math.SQRT2 }}</label></span>
+            <span>navigator.userAgent: <label class="label">{{ navigator?.userAgent }}</label></span>
+            <br><br>
+            <p>
+                Vue 指令有很多种，通常是以 <code>v-</code> 开头的属性名，例如 <code>v-bind、v-on、v-if</code>。
+                指令可以缩写，最常用是属性绑定 v-bind:id => <mark>:id</mark> 和事件绑定 v-on:click => <mark>@click</mark>
+            </p>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <b>v-bind</b> 用来绑定 html attribute，比如 <code>v-bind:id="myId"</code> 或者缩写成 <code>:id="myId"</code>。
+                    不指定属性名可利用对象进行多个绑定，比如 <code>v-bind="objectAttrs"</code>
+                </li>
+                <li class="list-group-item">
+                    <b>v-on</b> 用来绑定事件，比如点击事件 <code>v-on:click="add"</code> 或者缩写成 <code>@click="add"</code>
+                </li>
+                <li class="list-group-item">
+                    <b>v-if</b> 条件渲染
+                </li>
+            </ul>
+            <div class="alert alert-info">在指令中不需要写 Mustache 花括号</div>
+            <span v-bind:id="myId" class="label">span#id-my</span>
+            <span :id="myId" class="label">span#id-my</span>
+            <span v-bind="objectAttrs" class="label">objectAttrs</span>
+            <button class="btn btn-info" @click="add">click: {{ count }}</button>
+            <span class="label" v-if="!checked">未选中显示</span>
+            <input type="checkbox" class="form-check-input" @change="onChange" >
+        </div>
+        <h2>响应式基石：State 组件状态</h2>
+        <div id="v03">
+            count: <span>{{ count }}</span>
+            <p>大型工程，往往是由很多模块构成的，例如一台电脑，有 cpu，gpu，显示器等等</p>
+            <p>
+                在前端日益工程化的今天，用 Vue.js 编写的 Web 界面中，往往由大大小小的组件构成，
+                可以说其最小单元是 <b>Component</b>。
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    message: 'Hello Vue3!'
+                }
+            }
+        }).mount('#app')
+        const app1 = createApp({
+            data() {
+                return {
+                    count: 0,
+                    html: `<button class="btn btn-info" @click="count++">click: {{ count }}</button>`,
+                };
+            },
+        });
+        app1.use(hljsVuePlugin);
+        app1.mount('#v01');
+        createApp({
+            data() {
+                return {
+                    myId: 'id-my',
+                    count: 2,
+                    objectAttrs: {
+                        id: 'id-o-attrs',
+                        title: 'objectAttrs',
+                        ariaLabel: 'objectArrts',
+                    },
+                    checked: false,
+                };
+            },
+            methods: {
+                echo(str) {
+                    return str;
+                },
+                add() {
+                    this.count ++;
+                },
+                onChange(e) {
+                    this.checked = e.target.checked;
+                },
+            },
+        }).mount('#v02');
+        createApp({
+            data(){
+                return {
+                    count: 0,
+                };
+            },
+            mounted() {
+                this.count = 1;
+            },
+        }).mount('#v03');
+    </script>
+</body>
+</html>

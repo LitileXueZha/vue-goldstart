@@ -1,0 +1,33 @@
+{
+  "name": "vue-goldstart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LitileXueZha/vue-goldstart.git"
+  },
+  "keywords": [
+    "vue",
+    "tutorial",
+    "study-notes"
+  ],
+  "author": "lititlexuezha",
+  "license": "CC-BY-4.0",
+  "bugs": {
+    "url": "https://github.com/LitileXueZha/vue-goldstart/issues"
+  },
+  "homepage": "https://github.com/LitileXueZha/vue-goldstart#readme",
+  "dependencies": {
+    "@highlightjs/cdn-assets": "^11.6.0",
+    "@highlightjs/vue-plugin": "^2.1.0",
+    "bootstrap": "^5.2.1",
+    "vue": "^3.2.39"
+  },
+  "devDependencies": {
+    "debug": "^4.3.4"
+  }
+}
